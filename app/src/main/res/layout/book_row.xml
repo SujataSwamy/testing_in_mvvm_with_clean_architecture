@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="androidx.core.content.ContextCompat"/>
+        <import type="com.example.myapplication.R"/>
+        <variable
+            name="viewModel"
+            type="com.example.myapplication.BookViewModel" />
+        <variable
+            name="productItem"
+            type="com.example.myapplication.model.BookData" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="1">
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:padding="5dp"
+            android:text='@{String.valueOf(productItem.getBookName)}'
+            android:layout_gravity="center_vertical"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            tools:text="JOHNNIE WALKER RED LABEL 0,5L"/>
+        <TextView
+            android:id="@+id/product_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.35"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text='@{String.valueOf(productItem.getBookId)}'
+            android:textSize="14sp"
+            tools:text="AMERICAN"/>
+
+        <TextView
+            android:id="@+id/total_value_amt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:padding="5dp"
+            android:ellipsize="end"
+            android:text='@{String.valueOf(productItem.getBookPrice)}'
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            tools:text="EUR 10"/>
+    </LinearLayout>
+</layout>
