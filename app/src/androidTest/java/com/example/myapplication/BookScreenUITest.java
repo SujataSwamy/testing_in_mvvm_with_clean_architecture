@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import androidx.test.espresso.ViewInteraction;
 import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -23,17 +22,16 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(JUnit4.class)
-public class SalesScreenTest {
+public class BookScreenUITest {
 
 
     @Rule
     public ActivityTestRule<BookActivity> activityRule
             = new ActivityTestRule<>(BookActivity.class);
 
-
     @Before
     public void setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResourceDemo.getIdlingResource());
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
     }
 
     @Test

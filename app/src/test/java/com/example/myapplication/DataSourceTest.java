@@ -15,20 +15,26 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class LocalDataSourceTest {
+public class DataSourceTest {
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Test
     public void testSalesData(){
-       List<BookData> salesUtilDataModels = new ArrayList<>();
-        BookDataSource salesLocalDataSource = Mockito.mock(BookDataSource.class);
-        Mockito.doReturn(Observable.just(salesUtilDataModels)).when(salesLocalDataSource).getBookNameList("Author1");
+        List<BookData> bookDataList = new ArrayList<>();
+        BookData bookData = new BookData();
+        bookData.setBookId("1");
+        bookData.setBookName("Book1");
+        bookData.setBookPrice((double) 400);
+        bookData.setBookId("1");
+        bookDataList.add(bookData);
+        BookDataSource bookDataSource = Mockito.mock(BookDataSource.class);
+        Mockito.doReturn(Observable.just(bookDataList)).when(bookDataSource).getBookNameList("Author1");
 
-        salesLocalDataSource.getBookNameList("Author1")
+        bookDataSource.getBookNameList("Author1")
                 .test()
-                .assertValues(salesUtilDataModels)
+                .assertValues(bookDataList)
                 .dispose();
     }
 
@@ -37,10 +43,10 @@ public class LocalDataSourceTest {
         List<String> stringList = new ArrayList<>();
         stringList.add("Author1");
 
-        BookDataSource salesLocalDataSource = Mockito.mock(BookDataSource.class);
-        Mockito.doReturn(Observable.just(stringList)).when(salesLocalDataSource).getAuthorNameList();
+        BookDataSource bookDataSource = Mockito.mock(BookDataSource.class);
+        Mockito.doReturn(Observable.just(stringList)).when(bookDataSource).getAuthorNameList();
 
-        salesLocalDataSource.getAuthorNameList()
+        bookDataSource.getAuthorNameList()
                 .test()
                 .assertValues(stringList)
                 .dispose();

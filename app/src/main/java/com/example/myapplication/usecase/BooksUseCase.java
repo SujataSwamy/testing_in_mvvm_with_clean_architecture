@@ -3,7 +3,6 @@ package com.example.myapplication.usecase;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.EspressoIdlingResource;
-import com.example.myapplication.repository.BookRepository;
 import com.example.myapplication.BookRepositoryContract;
 
 import io.reactivex.annotations.NonNull;

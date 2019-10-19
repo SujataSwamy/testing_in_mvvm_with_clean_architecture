@@ -18,37 +18,35 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.Mockito.verify;
 
-public class SalesRepositoryTest {
+public class BookRepositoryTest {
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
-    private BookRepository mTasksRepository;
+    private BookRepository bookRepository;
 
     @Mock
-    private BookDataSource mTasksLocalDataSource;
+    private BookDataSource bookDataSource;
 
     @Mock
-    private BookDataSource.LoadBookListCallback mLoadFlightCallBack;
+    private BookDataSource.LoadBookListCallback loadBookListCallback;
 
     @Mock
-    private BookDataSource.GetAuthorNameCallback mSuccessfullSalesReport;
+    private BookDataSource.GetAuthorNameCallback mAuthorNameCallback;
 
     @Captor
-    private ArgumentCaptor<BookDataSource.LoadBookListCallback> mLoadFlightCallBackCaptor;
+    private ArgumentCaptor<BookDataSource.LoadBookListCallback> mLoadBookListCallbackArgumentCaptor;
 
     @Captor
-    private ArgumentCaptor<BookDataSource.GetAuthorNameCallback> mSuccessfullSalesReportCaptor;
+    private ArgumentCaptor<BookDataSource.GetAuthorNameCallback> mAuthorNameCallbackCaptor;
 
     @Before
     public void setupTasksRepository() {
-        // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
-        // inject the mocks in the test the initMocks method needs to be called.
         MockitoAnnotations.initMocks(this);
 
         // Get a reference to the class under test
-        mTasksRepository = BookRepository.getInstance(mTasksLocalDataSource);
+        bookRepository = BookRepository.getInstance(bookDataSource);
     }
 
     @After
@@ -56,21 +54,20 @@ public class SalesRepositoryTest {
     }
 
     @Test
-    public void getTasks_repositoryCachesAfterFirstApiCall() {
+    public void testAuthorNamesListCallback() {
         // Given a setup Captor to capture callbacks
-        // When two calls are issued to the tasks repository
         MutableLiveData<List<String>> mapMutableLiveData = new MutableLiveData<>();
         List<String> stringStringMap = new ArrayList<>();
         stringStringMap.add("Author1");
         mapMutableLiveData.setValue(stringStringMap);
-        mTasksRepository.getAuthorNameList(mSuccessfullSalesReport);
-        verify(mTasksLocalDataSource).getAuthorNameList(mSuccessfullSalesReportCaptor.capture());
-        mSuccessfullSalesReportCaptor.getValue().onAuthorNameLoaded(mapMutableLiveData);
-        verify(mTasksLocalDataSource).getAuthorNameList(ArgumentMatchers.any(BookDataSource.GetAuthorNameCallback.class));
+        bookRepository.getAuthorNameList(mAuthorNameCallback);
+        verify(bookDataSource).getAuthorNameList(mAuthorNameCallbackCaptor.capture());
+        mAuthorNameCallbackCaptor.getValue().onAuthorNameLoaded(mapMutableLiveData);
+        verify(bookDataSource).getAuthorNameList(ArgumentMatchers.any(BookDataSource.GetAuthorNameCallback.class));
     }
 
     @Test
-    public void getTasks_repositoryCachesAfterFirstApiCall1() {
+    public void testBooksListCallback() {
         MutableLiveData<List<BookData>> mapMutableLiveData = new MutableLiveData<>();
         List<BookData> bookdataList = new ArrayList<>();
         BookData bookData = new BookData();
@@ -80,9 +77,9 @@ public class SalesRepositoryTest {
         bookData.setBookId("1");
         bookdataList.add(bookData);
         mapMutableLiveData.setValue(bookdataList);
-        mTasksRepository.getBookList("author1", mLoadFlightCallBack);
-        verify(mTasksLocalDataSource).getBookList(ArgumentMatchers.eq("author1"), mLoadFlightCallBackCaptor.capture());
-        mLoadFlightCallBackCaptor.getValue().onBookListLoaded(mapMutableLiveData);
-        verify(mTasksLocalDataSource).getBookList(ArgumentMatchers.eq("author1"), ArgumentMatchers.any(BookRepositoryContract.LoadBookListCallback.class));
+        bookRepository.getBookList("author1", loadBookListCallback);
+        verify(bookDataSource).getBookList(ArgumentMatchers.eq("author1"), mLoadBookListCallbackArgumentCaptor.capture());
+        mLoadBookListCallbackArgumentCaptor.getValue().onBookListLoaded(mapMutableLiveData);
+        verify(bookDataSource).getBookList(ArgumentMatchers.eq("author1"), ArgumentMatchers.any(BookRepositoryContract.LoadBookListCallback.class));
     }
 }

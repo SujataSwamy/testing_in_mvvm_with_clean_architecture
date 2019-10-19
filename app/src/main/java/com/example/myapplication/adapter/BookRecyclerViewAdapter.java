@@ -13,13 +13,13 @@ import com.example.myapplication.model.BookData;
 import java.util.List;
 
 /**
- * This class provides a bridge between {@link BookData} & the report recyclerview
+ * This class provides a bridge between {@link BookData} & the book recyclerview
  * @author sujata
  */
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder>{
     private BookViewModel salesViewModel;
-    private List<BookData> productDataList;
+    private List<BookData> bookList;
 
     public BookRecyclerViewAdapter(BookViewModel salesViewModel) {
         super();
@@ -34,19 +34,18 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
     }
 
     public BookData getItem(int position) {
-        return productDataList.get(position);
+        return bookList.get(position);
     }
 
     @Override
     public void onBindViewHolder(BookRecyclerViewAdapter.ViewHolder holder, int position) {
-        // TODO: We have to improve the UI which displays the Sales Report Data. The issue is tracked by JIRA CC-2659.
         final BookData productData = getItem(position);
         holder.bind(salesViewModel, productData);
     }
 
     @Override
     public int getItemCount() {
-        return null == productDataList ? 0 : productDataList.size();
+        return null == bookList ? 0 : bookList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -64,12 +63,8 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
         }
     }
 
-    public void  setProductDataList(List<BookData> productDataList){
-        this.productDataList = productDataList;
-    }
-
-    List<BookData> getProductDataList() {
-        return productDataList;
+    public void setBookList(List<BookData> bookList){
+        this.bookList = bookList;
     }
 }
 

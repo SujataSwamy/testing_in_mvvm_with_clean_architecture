@@ -14,10 +14,10 @@ The Repository layer is the one that performs the logic of data access. Your res
 public class BookRepository implements BookRepositoryContract {
 
     private static BookRepository INSTANCE;
-    private final BookRepositoryContract salesDataSource;
+    private final BookRepositoryContract bookDatasource;
 
-    public BookRepository(BookRepositoryContract salesDataSource) {
-        this.salesDataSource = salesDataSource;
+    public BookRepository(BookRepositoryContract bookDatasource) {
+        this.bookDatasource = bookDatasource;
     }
 
     /**
@@ -27,11 +27,11 @@ public class BookRepository implements BookRepositoryContract {
      * @return the {@link BookRepository} instance
      */
     public static BookRepository getInstance(
-             BookDataSource salesDataSource) {
+             BookDataSource bookDatasource) {
         if (INSTANCE == null) {
             synchronized (BookRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new BookRepository(salesDataSource);
+                    INSTANCE = new BookRepository(bookDatasource);
                 }
             }
         }
@@ -41,7 +41,7 @@ public class BookRepository implements BookRepositoryContract {
     @Override
     public void getAuthorNameList(@NonNull final GetAuthorNameCallback callback) {
         EspressoIdlingResource.increment();
-        salesDataSource.getAuthorNameList( new GetAuthorNameCallback() {
+        bookDatasource.getAuthorNameList( new GetAuthorNameCallback() {
             @Override
             public void onAuthorNameLoaded(MutableLiveData authorNameModel) {
                 callback.onAuthorNameLoaded(authorNameModel);
@@ -50,7 +50,7 @@ public class BookRepository implements BookRepositoryContract {
 
             @Override
             public void onDataNotAvailable() {
-
+     // Handle case when there is no data available
             }
         });
     }
@@ -58,7 +58,7 @@ public class BookRepository implements BookRepositoryContract {
     @Override
     public void getBookList(String authorName, @NonNull final LoadBookListCallback callback) {
         EspressoIdlingResource.increment();
-        salesDataSource.getBookList(authorName,new LoadBookListCallback() {
+        bookDatasource.getBookList(authorName,new LoadBookListCallback() {
             @Override
             public void onBookListLoaded(MutableLiveData booksList) {
                 callback.onBookListLoaded(booksList);
@@ -67,7 +67,7 @@ public class BookRepository implements BookRepositoryContract {
 
             @Override
             public void onDataNotAvailable() {
-
+               // Handle case when there is no data available
             }
         });
     }

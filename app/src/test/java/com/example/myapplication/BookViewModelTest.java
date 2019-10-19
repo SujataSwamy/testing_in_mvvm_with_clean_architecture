@@ -28,7 +28,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SalesViewModelTest {
+public class BookViewModelTest {
 
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
@@ -71,7 +71,7 @@ public class SalesViewModelTest {
             bookData.setBookId("1");
             bookdataList.add(bookData);
         mapMutableLiveData.setValue(bookdataList);
-        bookViewModel.callFlightLeg("Author1");
+        bookViewModel.getBookNamesList("Author1");
         verify(mBookUseCase).getBooksNameList(ArgumentMatchers.eq("Author1"),mLoadBookListCaptor.capture());
         mLoadBookListCaptor.getValue().onBookListLoaded(mapMutableLiveData);
         assertThat(bookViewModel.getBookListLiveData().getValue(), is(notNullValue()));

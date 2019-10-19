@@ -25,14 +25,14 @@ public class AuthorNameUseCase  {
         mTaskRepository.getAuthorNameList(new BookRepositoryContract.GetAuthorNameCallback<List<BookData>>() {
             @Override
             public void onAuthorNameLoaded(MutableLiveData authorNameModel) {
-                // Processing logic before sending back to UI
+                // Processing logic can be written before sending data back to UI. This can be done in real scenario
                 callback.onAuthorNameLoaded(authorNameModel);
                 EspressoIdlingResource.decrement();
             }
 
             @Override
             public void onDataNotAvailable() {
-
+          // handle case when there is no data available
             }
         });
     }

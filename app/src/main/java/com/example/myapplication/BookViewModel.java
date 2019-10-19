@@ -4,7 +4,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myapplication.adapter.BookRecyclerViewAdapter;
 import com.example.myapplication.model.BookData;
 import com.example.myapplication.usecase.AuthorNameUseCase;
 import com.example.myapplication.usecase.BooksUseCase;
@@ -17,14 +16,13 @@ public class BookViewModel extends AndroidViewModel {
     private  MutableLiveData<List<String>> authorNameListLiveData;
     private AuthorNameUseCase authorNameUseCase;
     private BooksUseCase booksUseCase;
-    private BookRecyclerViewAdapter adapter;
 
     public MutableLiveData<List<String>> getAuthorNameListLiveData() {
         return authorNameListLiveData;
     }
 
     /**
-     * Get Flight Legs and observe in UI
+     * Get Book List and observe in UI
      * @return
      */
     public MutableLiveData<List<BookData>> getBookListLiveData() {
@@ -43,14 +41,13 @@ public class BookViewModel extends AndroidViewModel {
         authorNameListLiveData = new MutableLiveData<>();
         this.booksUseCase = booksUseCase;
         this.authorNameUseCase = authorNameUseCase;
-        // Get flight leg
         getAuthorNames();
     }
 
     /**
-     * Call for getting Flight Legs From Repository
+     * Call for getting Book List From Use Case
      */
-    public void callFlightLeg(String authorName) {
+    public void getBookNamesList(String authorName) {
         booksUseCase.getBooksNameList(authorName,new BookRepositoryContract.LoadBookListCallback<List<BookData>>() {
 
             @Override
@@ -65,7 +62,7 @@ public class BookViewModel extends AndroidViewModel {
     }
 
     /**
-     * Call for gettting Sales Report From Repository
+     * Call for gettting Author Names From Use Case
      *
      * @param
      */
@@ -81,22 +78,6 @@ public class BookViewModel extends AndroidViewModel {
 
             }
         });
-    }
-
-    /**
-     * Get Recyclerview adapter in View Model
-     *
-     * @param adapter
-     */
-    public void setRecyclerViewAdapter(BookRecyclerViewAdapter adapter) {
-        this.adapter = adapter;
-    }
-
-    /**
-     * Binding Method for Recyclerview
-     */
-    public BookRecyclerViewAdapter getAdapter() {
-        return adapter;
     }
 
 }

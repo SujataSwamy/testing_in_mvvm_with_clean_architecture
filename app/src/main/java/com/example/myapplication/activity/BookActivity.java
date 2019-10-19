@@ -20,38 +20,32 @@ import com.example.myapplication.model.BookData;
 import java.util.List;
 
 /**
- * This class displays sales report, per flight leg, per product & per user
+ * Demo class for showing author names and book names based on author names
  *
  * @author sujata
  */
 public class BookActivity extends AppCompatActivity {
     private BookRecyclerViewAdapter bookRecyclerViewAdapter;
-    private BookViewModel salesViewModel;
+    private BookViewModel bookViewModel;
     private ActivityMainBinding dataBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Instantiate ViewModel
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         BookViewModelFactory factory = BookViewModelFactory.getInstance(getApplication());
 
-        salesViewModel = ViewModelProviders.of(this, factory).get(BookViewModel.class);
-        dataBinding.setModel(salesViewModel);
-        //Observes changes of Livedata in Data binding
+        bookViewModel = ViewModelProviders.of(this, factory).get(BookViewModel.class);
+        dataBinding.setModel(bookViewModel);
         dataBinding.setLifecycleOwner(this);
-        // Observe Flight Leg Data
-        salesViewModel.getAuthorNameListLiveData().observe(this, authorNameListObserver);
-        salesViewModel.getBookListLiveData().observe(this,bookListObserver);
-        // Set Listener for Flight Leg
-//        dataBinding.flightLegs.setListener(onFlightsAdded);
-        // Set up recyclerview
-        setSalesRecyclerViewAdapter();
+        bookViewModel.getAuthorNameListLiveData().observe(this, authorNameListObserver);
+        bookViewModel.getBookListLiveData().observe(this,bookListObserver);
+        setRecyclerViewAdapter();
         dataBinding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String text = dataBinding.spinner.getSelectedItem().toString();
-                salesViewModel.callFlightLeg(text);
+                bookViewModel.getBookNamesList(text);
             }
 
             @Override
@@ -59,15 +53,14 @@ public class BookActivity extends AppCompatActivity {
 
             }
         });
-        salesViewModel.setRecyclerViewAdapter(bookRecyclerViewAdapter);
     }
 
     /**
      * Setup RecyclerView
      */
-    private void setSalesRecyclerViewAdapter() {
+    private void setRecyclerViewAdapter() {
         dataBinding.recyclerview.setHasFixedSize(true);
-        bookRecyclerViewAdapter = new BookRecyclerViewAdapter(salesViewModel);
+        bookRecyclerViewAdapter = new BookRecyclerViewAdapter(bookViewModel);
         dataBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         dataBinding.recyclerview.setAdapter(bookRecyclerViewAdapter);
     }
@@ -86,7 +79,7 @@ public class BookActivity extends AppCompatActivity {
     Observer<List<BookData>> bookListObserver = new Observer<List<BookData>>() {
         @Override
         public void onChanged(@Nullable List<BookData> stringStringMap) {
-            bookRecyclerViewAdapter.setProductDataList(stringStringMap);
+            bookRecyclerViewAdapter.setBookList(stringStringMap);
             bookRecyclerViewAdapter.notifyDataSetChanged();
         }
     };

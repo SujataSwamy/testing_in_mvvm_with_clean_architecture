@@ -16,20 +16,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+//Dummy Book Data Source
 public class BookDataSource implements BookRepositoryContract {
 
-    private static BookDataSource salesDataSource;
+    private static BookDataSource bookDataSource;
     private GetAuthorNameCallback authorCallBack;
     private LoadBookListCallback bookCallBack;
-    private String authorName;
 
+    // get instance of book datasource
     public static BookDataSource getInstance(){
-        if (salesDataSource == null){
-            salesDataSource = new BookDataSource();
+        if (bookDataSource == null){
+            bookDataSource = new BookDataSource();
         }
-        return salesDataSource;
+        return bookDataSource;
     }
 
+    // get authorname list
     public Observable<List<String>> getAuthorNameList(){
 
         Observable<List<String>> observer = Observable.fromCallable(new Callable<List<String> >() {
@@ -70,6 +72,7 @@ public class BookDataSource implements BookRepositoryContract {
 
     }
 
+    // get authorname
     private List<String> getAuthorName() {
         ArrayList<String> stringArrayList = new ArrayList<>();
         stringArrayList.add("Author1");
@@ -79,6 +82,7 @@ public class BookDataSource implements BookRepositoryContract {
         return stringArrayList;
     }
 
+    // get author name list
     @Override
     public void getAuthorNameList(@androidx.annotation.NonNull GetAuthorNameCallback callback) {
         this.authorCallBack = callback;
@@ -86,12 +90,14 @@ public class BookDataSource implements BookRepositoryContract {
 
     }
 
+    // get book list
     @Override
     public void getBookList(String authorName, @androidx.annotation.NonNull LoadBookListCallback callback) {
         this.bookCallBack = callback;
         getBookNameList(authorName);
     }
 
+    // Get Dummy Book Name List
     public Observable<List<BookData>> getBookNameList(final String authorName) {
         Observable<List<BookData>> observer = Observable.fromCallable(new Callable<List<BookData> >() {
             @Override
@@ -130,6 +136,7 @@ public class BookDataSource implements BookRepositoryContract {
         return observer;
     }
 
+    // Get Dummy Book Data
     public List<BookData> getBookData(String authorName) {
         List<BookData> bookdataList = new ArrayList<>();
         if(authorName.equalsIgnoreCase("Author1")){

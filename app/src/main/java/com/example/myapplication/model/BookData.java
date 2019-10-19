@@ -1,7 +1,6 @@
 package com.example.myapplication.model;
 
-import java.math.BigDecimal;
-
+// Pojo class for Book
 public class BookData {
     private String bookId;
     private String bookName;

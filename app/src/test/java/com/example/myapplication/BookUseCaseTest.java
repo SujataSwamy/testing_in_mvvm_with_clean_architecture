@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.myapplication.datasource.BookDataSource;
 import com.example.myapplication.model.BookData;
-import com.example.myapplication.repository.BookRepository;
-import com.example.myapplication.usecase.AuthorNameUseCase;
 import com.example.myapplication.usecase.BooksUseCase;
 
 import org.junit.Before;
@@ -30,15 +28,15 @@ public class BookUseCaseTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
-    private FakeRepository salesRepository = new FakeRepository();
+    private FakeRepository fakeRepository = new FakeRepository();
 
     @Mock
-    private BookRepositoryContract.LoadBookListCallback mSuccessfullSalesReport;
+    private BookRepositoryContract.LoadBookListCallback mBookListLoadCallBack;
 
     @Captor
     private ArgumentCaptor<BookDataSource.LoadBookListCallback> mBookListCallBackCaptor;
 
-    private BooksUseCase salesUseCase = spy(new BooksUseCase(salesRepository));
+    private BooksUseCase bookUseCase = spy(new BooksUseCase(fakeRepository));
 
     @Before
     public void s() {
@@ -57,11 +55,10 @@ public class BookUseCaseTest {
         bookData.setBookId("1");
         bookdataList.add(bookData);
         mapMutableLiveData.setValue(bookdataList);
-        salesUseCase.getBooksNameList("Author1", mSuccessfullSalesReport);
-        verify(salesUseCase).getBooksNameList(eq("Author1"), mBookListCallBackCaptor.capture());
+        bookUseCase.getBooksNameList("Author1", mBookListLoadCallBack);
+        verify(bookUseCase).getBooksNameList(eq("Author1"), mBookListCallBackCaptor.capture());
         mBookListCallBackCaptor.getValue().onBookListLoaded(mapMutableLiveData);
-        verify(salesUseCase).getBooksNameList(eq("Author1"), any(BookRepositoryContract.LoadBookListCallback.class));
-
+        verify(bookUseCase).getBooksNameList(eq("Author1"), any(BookRepositoryContract.LoadBookListCallback.class));
     }
 
 }
